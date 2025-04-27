@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card"
 import { ThemeProvider as NextThemesProvider } from "next-themes"
 // import { type ThemeProviderProps } from "next-themes/dist/types"
 import { useTheme } from "next-themes"
+import { KanbanBoard } from "@/components/KanbanBoard"
 
 export function ThemeProvider({
   children,
@@ -27,10 +28,35 @@ export function ThemeToggle() {
   )
 }
 
+const sampleTasks = [
+  {
+    id: "1",
+    title: "Design new logo",
+    description: "Create a modern and minimalist logo for the brand",
+    status: "todo" as const,
+  },
+  {
+    id: "2",
+    title: "Implement authentication",
+    description: "Set up user authentication with NextAuth.js",
+    status: "in-progress" as const,
+  },
+  {
+    id: "3",
+    title: "Write documentation",
+    description: "Document the API endpoints and usage",
+    status: "done" as const,
+  },
+]
+
 export default function Home() {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <ThemeToggle />
+      <main className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">Kanban Board</h1>
+        <KanbanBoard tasks={sampleTasks} />
+      </main>
     </ThemeProvider>
   )
 }
