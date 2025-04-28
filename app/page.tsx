@@ -5,7 +5,6 @@ import { Dialog } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ThemeProvider as NextThemesProvider } from "next-themes"
-// import { type ThemeProviderProps } from "next-themes/dist/types"
 import { useTheme } from "next-themes"
 import { KanbanBoard } from "@/components/KanbanBoard"
 
@@ -34,12 +33,14 @@ const sampleTasks = [
     title: "Design new logo",
     description: "Create a modern and minimalist logo for the brand",
     status: "todo" as const,
+    assignee: "John Doe"
   },
   {
     id: "2",
     title: "Implement authentication",
     description: "Set up user authentication with NextAuth.js",
     status: "in-progress" as const,
+    assignee: "Jane Smith"
   },
   {
     id: "3",
