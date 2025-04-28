@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ThemeProvider as NextThemesProvider } from "next-themes"
 import { useTheme } from "next-themes"
-import { KanbanBoard } from "@/components/KanbanBoard"
+import { KanbanBoard, Task } from "@/components/KanbanBoard"
 
 export function ThemeProvider({
   children,
@@ -56,7 +56,7 @@ export default function Home() {
       <ThemeToggle />
       <main className="container mx-auto p-4">
         <h1 className="text-2xl font-bold mb-4">Kanban Board</h1>
-        <KanbanBoard tasks={sampleTasks} />
+        <KanbanBoard tasks={sampleTasks as Task[]} />
       </main>
     </ThemeProvider>
   )

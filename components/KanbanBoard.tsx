@@ -8,7 +8,7 @@ import { TaskDialog } from "@/components/task-dialog"
 import { TaskDropdown } from "@/components/task-dropdown"
 import { v4 as uuidv4 } from "uuid"
 
-interface Task {
+export interface Task {
   id: string
   title: string
   description: string
