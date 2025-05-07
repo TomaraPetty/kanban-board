@@ -1,12 +1,10 @@
 "use client"
 
-import Image from "next/image";
-import { Dialog } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
 import { ThemeProvider as NextThemesProvider } from "next-themes"
 import { useTheme } from "next-themes"
 import { KanbanBoard, Task } from "@/components/KanbanBoard"
+import { assignees } from "@/lib/data"
 
 export function ThemeProvider({
   children,
@@ -33,21 +31,29 @@ const sampleTasks = [
     title: "Design new logo",
     description: "Create a modern and minimalist logo for the brand",
     status: "todo" as const,
-    assignee: "John Doe"
+    assignee: assignees[0].name
   },
   {
     id: "2",
     title: "Implement authentication",
     description: "Set up user authentication with NextAuth.js",
     status: "in-progress" as const,
-    assignee: "Jane Smith"
+    assignee: assignees[1].name
   },
   {
     id: "3",
     title: "Write documentation",
     description: "Document the API endpoints and usage",
     status: "done" as const,
+    assignee: assignees[2].name
   },
+  {
+    id: "4",
+    title: "Setup CI/CD pipeline",
+    description: "Configure GitHub Actions for automated testing and deployment",
+    status: "todo" as const,
+    assignee: assignees[3].name
+  }
 ]
 
 export default function Home() {
