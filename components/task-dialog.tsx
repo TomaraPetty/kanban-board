@@ -27,6 +27,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { assignees } from "@/lib/data"
+import Image from "next/image"
 
 const taskFormSchema = z.object({
   title: z.string().min(2, {
@@ -125,8 +127,20 @@ export function TaskDialog({
                     </FormControl>
                     <SelectContent>
                       <SelectItem value="unassigned">Unassigned</SelectItem>
-                      <SelectItem value="John Doe">John Doe</SelectItem>
-                      <SelectItem value="Jane Smith">Jane Smith</SelectItem>
+                      {assignees.map(assignee => (
+                        <SelectItem key={assignee.id} value={assignee.name}>
+                          <div className="flex items-center gap-2">
+                            <Image
+                              src={assignee.avatar}
+                              alt={assignee.name}
+                              width={20}
+                              height={20}
+                              className="rounded-full"
+                            />
+                            <span>{assignee.name}</span>
+                          </div>
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />

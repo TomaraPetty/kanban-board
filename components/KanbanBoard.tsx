@@ -7,6 +7,8 @@ import { useState } from "react"
 import { TaskDialog } from "@/components/task-dialog"
 import { TaskDropdown } from "@/components/task-dropdown"
 import { v4 as uuidv4 } from "uuid"
+import { assignees } from "@/lib/data"
+import Image from "next/image"
 
 export interface Task {
   id: string
@@ -88,42 +90,80 @@ export function KanbanBoard({ tasks: initialTasks }: KanbanBoardProps) {
   const inProgressTasks = tasks.filter(task => task.status === 'in-progress')
   const doneTasks = tasks.filter(task => task.status === 'done')
 
-  const renderTaskCard = (task: Task) => (
-    <Card key={task.id} className="p-4">
-      <div className="flex justify-between items-start">
-        <div>
-          <h3 className="font-semibold">{task.title}</h3>
-          {task.description && (
-            <p className="text-sm text-gray-500">{task.description}</p>
-          )}
+  const renderTaskCard = (task: Task) => {
+    const assignee = assignees.find(a => a.name === task.assignee)
+    
+    return (
+      <Card key={task.id} className="p-4">
+        <div className="flex justify-between items-start">
+          <div>
+            <h3 className="font-semibold">{task.title}</h3>
+            {task.description && (
+              <p className="text-sm text-gray-500">{task.description}</p>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <Select 
+              value={task.assignee || "unassigned"} 
+              onValueChange={(value) => handleAssigneeChange(task.id, value === "unassigned" ? "" : value)}
+            >
+              <SelectTrigger className="w-[140px]">
+                <SelectValue placeholder="Assign to...">
+                  {task.assignee && assignee && (
+                    <div className="flex items-center gap-2">
+                      <Image
+                        src={assignee.avatar}
+                        alt={assignee.name}
+                        width={20}
+                        height={20}
+                        className="rounded-full"
+                      />
+                      <span>{assignee.name}</span>
+                    </div>
+                  )}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="unassigned">Unassigned</SelectItem>
+                {assignees.map(assignee => (
+                  <SelectItem key={assignee.id} value={assignee.name}>
+                    <div className="flex items-center gap-2">
+                      <Image
+                        src={assignee.avatar}
+                        alt={assignee.name}
+                        width={20}
+                        height={20}
+                        className="rounded-full"
+                      />
+                      <span>{assignee.name}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <TaskDropdown 
+              onEdit={() => handleEditTask(task)} 
+              onDelete={() => handleDeleteTask(task.id)} 
+            />
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Select 
-            value={task.assignee || "unassigned"} 
-            onValueChange={(value) => handleAssigneeChange(task.id, value === "unassigned" ? "" : value)}
-          >
-            <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder="Assign to..." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="unassigned">Unassigned</SelectItem>
-              <SelectItem value="John Doe">John Doe</SelectItem>
-              <SelectItem value="Jane Smith">Jane Smith</SelectItem>
-            </SelectContent>
-          </Select>
-          <TaskDropdown 
-            onEdit={() => handleEditTask(task)} 
-            onDelete={() => handleDeleteTask(task.id)} 
-          />
-        </div>
-      </div>
-      {task.assignee && (
-        <p className="text-sm text-muted-foreground mt-2">
-          Assigned to: {task.assignee}
-        </p>
-      )}
-    </Card>
-  )
+        {task.assignee && assignee && (
+          <div className="flex items-center gap-2 mt-2">
+            <Image
+              src={assignee.avatar}
+              alt={assignee.name}
+              width={20}
+              height={20}
+              className="rounded-full"
+            />
+            <p className="text-sm text-muted-foreground">
+              Assigned to: {assignee.name}
+            </p>
+          </div>
+        )}
+      </Card>
+    )
+  }
 
   return (
     <div className="flex gap-4 p-4 h-full">
